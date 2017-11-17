@@ -4,8 +4,9 @@ Author(s): Matthew Loper
 See LICENCE.txt for licensing and contact information.
 """
 
+from __future__ import absolute_import
 import numpy.random
-from ch import Ch
+from .ch import Ch
 
 api_not_implemented = ['choice','bytes','shuffle','permutation']
 

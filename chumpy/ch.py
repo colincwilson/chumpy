@@ -7,6 +7,11 @@ See LICENCE.txt for licensing and contact information.
 """
 
 
+from __future__ import absolute_import
+from __future__ import print_function
+import six
+from six.moves import range
+from functools import reduce
 __all__ = ['Ch', 'depends_on', 'MatVecMult', 'ChHandle', 'ChLambda']
 
 import os, sys, time
@@ -18,11 +23,11 @@ import weakref
 import copy as external_copy
 from functools import wraps
 from scipy.sparse.linalg.interface import LinearOperator
-import utils
-from utils import row, col
+from . import utils
+from .utils import row, col
 import collections
 from copy import deepcopy
-from utils import timer
+from .utils import timer
 
 
 # Turn this on if you want the profiler injected
@@ -325,7 +330,7 @@ class Ch(object):
         return len(self.r)
         
     def minimize(self, *args, **kwargs):
-        import optimization        
+        from . import optimization        
         return optimization.minimize(self, *args, **kwargs)
         
     def __array__(self, *args):
@@ -436,7 +441,7 @@ class Ch(object):
 
 
     def clear_cache_wrt(self, wrt, itr=None):
-        if self._cache['drs'].has_key(wrt):
+        if wrt in self._cache['drs']:
             self._cache['drs'][wrt] = None
 
         if hasattr(self, 'dr_cached') and wrt in self.dr_cached:
@@ -662,7 +667,7 @@ class Ch(object):
 
             if hasattr(p, 'dterms') and p is not wrt and p.is_dr_wrt(wrt):
                 if not isinstance(p, Ch):
-                    print 'BROKEN!'
+                    print('BROKEN!')
                     raise Exception('Broken Should be Ch object')
 
                 indirect_dr = p.lmult_wrt(self._superdot(lhs, self._compute_dr_wrt_sliced(p)), wrt)
@@ -817,7 +822,7 @@ class Ch(object):
         # If we *always* filled in the cache, it would require 
         # more memory but would occasionally save a little cpu,
         # on average.
-        if len(self._parents.keys()) != 1:
+        if len(list(self._parents.keys())) != 1:
             self._cache['drs'][wrt] = result
 
         if DEBUG:
@@ -895,7 +900,7 @@ class Ch(object):
                             color = 'blue'
                         if isinstance(dtval, reordering.Concatenate) and len(dtval.dr_cached) > 0:
                             s = 'dr_cached\n'
-                            for k, v in dtval.dr_cached.iteritems():
+                            for k, v in six.iteritems(dtval.dr_cached):
                                 if v is not None:
                                     issparse = sp.issparse(v)
                                     size = v.size 
@@ -913,7 +918,7 @@ class Ch(object):
                         elif len(dtval._cache['drs']) > 0:
                             s = '_cache\n'
                             
-                            for k, v in dtval._cache['drs'].iteritems():
+                            for k, v in six.iteritems(dtval._cache['drs']):
                                 if v is not None:
                                     issparse = sp.issparse(v)
                                     size = v.size
@@ -1029,7 +1034,7 @@ class Ch(object):
                         result += string_for(getattr(self, dterm), dterm)
 
             if cachelim != np.inf and hasattr(self, '_cache') and 'drs' in self._cache:
-                import cPickle as pickle
+                import six.moves.cPickle as pickle
                 for dtval, jac in self._cache['drs'].items():
                     # child_label = getattr(dtval, 'label') if hasattr(dtval, 'label') else dterm
                     # child_label = '%s (%s)' % (child_label, str(dtval.__class__.__name__))
@@ -1203,7 +1208,7 @@ def depends_on(*dependencies):
         
         @wraps(func)
         def with_caching(self, *args, **kwargs):
-            func_name = func.func_name
+            func_name = func.__name__
             sdf = self._depends_on_deps[func_name]
             if sdf['out_of_date'] == True:
                 #tm = time.time()
@@ -1305,17 +1310,17 @@ class ChGroup(Ch):
     def compute_dr_wrt(self, wrt):
         return self._result.dr_wrt(wrt)
 
-import ch_ops
-from ch_ops import *
+from . import ch_ops
+from .ch_ops import *
 __all__ += ch_ops.__all__
 
-import reordering
-from reordering import *
+from . import reordering
+from .reordering import *
 __all__ += reordering.__all__
 
 
-import linalg
-import ch_random as random
+from . import linalg
+from . import ch_random as random
 __all__ += ['linalg', 'random']
 
 
@@ -1339,16 +1344,16 @@ def main():
     x30 = Ch(30)
     
     tmp = ChLambda(lambda x, y, z: Ch(1) + Ch(2) * Ch(3) + 4)
-    print tmp.dr_wrt(tmp.x)
+    print(tmp.dr_wrt(tmp.x))
     import pdb; pdb.set_trace()
     #a(b(c(d(e(f),g),h)))
     
     blah = tst(x10, x20, x30)
     
-    print blah.r
+    print(blah.r)
 
 
-    print foo
+    print(foo)
     
     import pdb; pdb.set_trace()
     

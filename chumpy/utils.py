@@ -3,6 +3,7 @@ Author(s): Matthew Loper
 
 See LICENCE.txt for licensing and contact information.
 """
+from __future__ import absolute_import
 import scipy.sparse as sp 
 import numpy as np
 

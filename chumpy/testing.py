@@ -1,4 +1,5 @@
-import ch
+from __future__ import absolute_import
+from . import ch
 import numpy as np
 
 fn1 = 'assert_allclose', 'assert_almost_equal', 'assert_approx_equal', 'assert_array_almost_equal', 'assert_array_almost_equal_nulp', 'assert_array_equal', 'assert_array_less', 'assert_array_max_ulp', 'assert_equal', 'assert_no_warnings', 'assert_string_equal'

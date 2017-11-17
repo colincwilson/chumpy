@@ -6,8 +6,11 @@ Author(s): Matthew Loper
 See LICENCE.txt for licensing and contact information.
 """
 
+from __future__ import absolute_import
 import unittest
 import numpy as np
+from six.moves import range
+from functools import reduce
 
 
 has_ressources = True
@@ -49,7 +52,7 @@ if not has_ressources:
 
   
 
-import ch
+from . import ch
 
 
 
@@ -144,7 +147,7 @@ class TestPerformance(unittest.TestCase):
 
 
         # Get times for svd
-        from linalg import svd
+        from .linalg import svd
         u, s, v = svd(mtx)
         def setup():
             mtx.x = -mtx.x
