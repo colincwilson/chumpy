@@ -15,6 +15,7 @@ from copy import copy as copy_copy
 
 import numpy as np
 import scipy.sparse as sp
+from functools import reduce
 
 from . import ch
 from .utils import row, col
