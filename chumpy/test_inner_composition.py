@@ -6,8 +6,10 @@ Author(s): Matthew Loper
 See LICENCE.txt for licensing and contact information.
 """
 
+from __future__ import absolute_import
 import unittest
-from ch import Ch, depends_on
+from .ch import Ch, depends_on
+from six.moves import range
 
 class TestInnerComposition(unittest.TestCase):
 

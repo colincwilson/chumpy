@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+from six.moves import range
 __author__ = 'matt'
 
-import ch
+from . import ch
 import numpy as np
-from utils import row, col
+from .utils import row, col
 import scipy.sparse as sp
 import scipy.special
 

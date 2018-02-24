@@ -6,14 +6,15 @@ Author(s): Matthew Loper
 See LICENCE.txt for licensing and contact information.
 """
 
+from __future__ import absolute_import
 __all__ = ['minimize']
 
 import numpy as np
-import ch
+from . import ch
 import scipy.sparse as sp
 import scipy.optimize
 
-from optimization_internal import minimize_dogleg
+from .optimization_internal import minimize_dogleg
 
 #from memory_profiler import profile, memory_usage
 
@@ -48,7 +49,7 @@ def minimize(fun, x0, method='dogleg', bounds=None, constraints=(), tol=None, ca
     free_variables = x0
 
 
-    from ch import SumOfSquares
+    from .ch import SumOfSquares
 
     hessp = None
     hess = None
