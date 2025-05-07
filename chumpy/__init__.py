@@ -1,4 +1,4 @@
-from numpy import bool, int, float, complex, object, str, nan, inf
+from numpy import nan, inf
 
 from . import extras
 from . import testing
@@ -12,10 +12,10 @@ from .logic import *
 def test():
     from os.path import split
     import unittest
-    test_loader= unittest.TestLoader()
+    test_loader = unittest.TestLoader()
     test_loader = test_loader.discover(split(__file__)[0])
     test_runner = unittest.TextTestRunner()
-    test_runner.run( test_loader )
+    test_runner.run(test_loader)
 
 
 demos = {}
@@ -102,13 +102,11 @@ print(y)  # should be all 0.5
 """
 
 
-
-
 def demo(which=None):
     if which not in demos:
         print('Please indicate which demo you want, as follows:')
         for key in demos:
-            print("\tdemo('%s')" % (key,))
+            print("\tdemo('%s')" % (key, ))
         return
 
     print('- - - - - - - - - - - <CODE> - - - - - - - - - - - -')
